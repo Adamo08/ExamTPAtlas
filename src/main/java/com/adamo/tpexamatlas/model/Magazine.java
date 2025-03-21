@@ -1,8 +1,6 @@
 package com.adamo.tpexamatlas.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -13,6 +11,15 @@ public class Magazine extends Document {
 
     @Temporal(TemporalType.DATE)
     private Date dateIssue;
+
+
+    @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "ID", foreignKey = @ForeignKey(name = "FK_MAGAZINE_DOCUMENT_ID"))
+    public Long getId() {
+        return super.getId();
+    }
 
     // Constructors
     public Magazine() {}

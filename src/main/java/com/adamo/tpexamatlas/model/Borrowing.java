@@ -12,11 +12,11 @@ public class Borrowing {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_BORROWING_USER"))
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "document_id")
+    @JoinColumn(name = "document_id", foreignKey = @ForeignKey(name = "FK_BORROWING_DOCUMENT"))
     private Document document;
 
     @Temporal(TemporalType.DATE)
