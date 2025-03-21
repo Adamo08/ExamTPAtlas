@@ -5,6 +5,8 @@ import com.adamo.tpexamatlas.model.Document;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+import java.util.List;
+
 public class DocumentRepository {
     @PersistenceContext
     public EntityManager em;
@@ -16,5 +18,10 @@ public class DocumentRepository {
 
     public Document findById(Long id) {
         return em.find(Document.class, id);
+    }
+
+    public List<Document> findAll() {
+        return em.createQuery("SELECT d FROM Document d", Document.class)
+                .getResultList();
     }
 }
