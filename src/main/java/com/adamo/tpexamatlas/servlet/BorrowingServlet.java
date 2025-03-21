@@ -1,6 +1,5 @@
 package com.adamo.tpexamatlas.servlet;
 
-
 import com.adamo.tpexamatlas.model.Borrowing;
 import com.adamo.tpexamatlas.model.Document;
 import com.adamo.tpexamatlas.model.User;
@@ -22,7 +21,6 @@ import java.util.List;
 
 @WebServlet("/borrowings/*")
 public class BorrowingServlet extends HttpServlet {
-
     private EntityManagerFactory emf;
     private BorrowingRepository borrowingRepository = new BorrowingRepository();
     private UserRepository userRepository = new UserRepository();
@@ -32,7 +30,7 @@ public class BorrowingServlet extends HttpServlet {
     public void init() {
         emf = Persistence.createEntityManagerFactory("jpa-atlas-tp-aiven");
     }
-    // List current borrowings
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         EntityManager em = emf.createEntityManager();
@@ -46,7 +44,6 @@ public class BorrowingServlet extends HttpServlet {
         }
     }
 
-    // Borrow a document
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         EntityManager em = emf.createEntityManager();
@@ -81,7 +78,6 @@ public class BorrowingServlet extends HttpServlet {
         }
     }
 
-    // Return a document
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         EntityManager em = emf.createEntityManager();
@@ -101,6 +97,7 @@ public class BorrowingServlet extends HttpServlet {
 
             resp.setContentType("application/json");
             resp.getWriter().write(JsonUtil.toJson(borrowing));
+            em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
