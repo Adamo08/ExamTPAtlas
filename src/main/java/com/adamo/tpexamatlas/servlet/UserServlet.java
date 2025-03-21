@@ -19,7 +19,6 @@ public class UserServlet extends HttpServlet {
     private UserRepository userRepository;
     private EntityManagerFactory emf;
 
-    // Initialize EntityManagerFactory in servlet init
     @Override
     public void init() {
         emf = Persistence.createEntityManagerFactory("jpa-atlas-tp-aiven");
@@ -30,11 +29,24 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         EntityManager em = emf.createEntityManager();
         try {
-            // Set EntityManager in repository
             userRepository.em = em;
             resp.setContentType("application/json");
-            List<User> users = userRepository.findAll();
-            resp.getWriter().write(JsonUtil.toJson(users));
+
+            String pathInfo = req.getPathInfo(); // e.g., "/1" or null
+            if (pathInfo != null && pathInfo.length() > 1) {
+                // Get specific user by ID
+                Long userId = Long.parseLong(pathInfo.substring(1)); // Remove leading "/"
+                User user = userRepository.findById(userId);
+                if (user == null) {
+                    resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+                    return;
+                }
+                resp.getWriter().write(JsonUtil.toJson(user));
+            } else {
+                // List all users
+                List<User> users = userRepository.findAll();
+                resp.getWriter().write(JsonUtil.toJson(users));
+            }
         } finally {
             em.close();
         }
@@ -64,7 +76,6 @@ public class UserServlet extends HttpServlet {
             em.close();
         }
     }
-
 
     @Override
     public void destroy() {
