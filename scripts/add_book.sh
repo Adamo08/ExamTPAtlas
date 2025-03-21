@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Base URL of the application
-BASE_URL="http://localhost:9090/TPExamAtlas_war_exploded/"
+BASE_URL="http://localhost:9090/ExamTPAtlas_war_exploded/"
 
 # Function to display usage
 usage() {
